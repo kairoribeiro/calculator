@@ -33,7 +33,32 @@ class CalcController {
         this._operation.pop();
     }
 
+    getLastOperation() {
+        return this._operation[this._operation.length-1];
+    }
+
+    setLastOperation(value) {
+        this._operation[this._operation.length-1] = value;
+    }
+
+    isOperator(value) {
+        return (['+', '-', '*', '%', '/'].indexOf(value) > -1);
+    }
+
     addOperation(value) {
+        if (isNaN(this.getLastOperation())) {
+            if (this.isOperator(value)) {
+                this._setLastOperation(value);
+            } else if(isNaN(value)) {
+
+            } else {
+                this._operation.push(value);
+            }
+        } else {
+            let newValue = this.getLastOperation().toString() + value.toString();
+            this.setLastOperation(parseInt(newValue));
+        }
+
         this._operation.push(value);
     }
 
@@ -49,24 +74,42 @@ class CalcController {
             case 'ce':
                 this.clearEntry();
                 break;
-            // case 'sum':
-            //     this.();
-            //     break;
-            // case 'subtract':
-            //     this.();
-            //     break;
-            // case 'divide':
-            //     this.();
-            //     break;
-            // case 'multiply':
-            //     this.();
-            //     break;
-            // case 'percentage':
-            //     this.();
-            //     break;
-            // case 'equal':
-            //     this.();
-            //     break;
+            case 'sum':
+                this.addOperation('+');
+                break;
+            case 'subtract':
+                this.addOperation('-');
+                break;
+            case 'divide':
+                this.addOperation('/');
+                break;
+            case 'multiply':
+                this.addOperation('*');
+                break;
+            case 'percentage':
+                this.addOperation('%');
+                break;
+            case 'equal':
+                // this.();
+                break;
+                case 'dot':
+                    this.addOperation('.');
+                    break;
+
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                this.addOperation(parseInt(value));
+                break;
+
+
             default:
                 this.setError();
                 break;

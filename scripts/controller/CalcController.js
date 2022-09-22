@@ -59,7 +59,14 @@ class CalcController {
     }
 
     setLastNumberToDisplay() {
-        
+        let lastNumber;
+        for (let i = this._operation.length -1; i >= 0; i--) {
+            if (this.isOperator(this._operation[i])) {
+                lastNumber = this._operation[i];
+                break;
+            }
+        }
+        this.displayCalc = lastNumber;
     }
 
     addOperation(value) {
@@ -77,13 +84,13 @@ class CalcController {
             } else {
                 let newValue = this.getLastOperation().toString() + value.toString();
                 this.setLastOperation(parseInt(newValue));
-                this.setLastNumberToDisplay()
+                this.setLastNumberToDisplay();
             } 
         }
     }
 
     setError() {
-        this.displayCalc = 'Error'
+        this.displayCalc = 'Error';
     }
 
     execBtn(value) {
@@ -109,12 +116,11 @@ class CalcController {
             case 'percentage':
                 this.addOperation('%');
                 break;
-            // case 'equal':
-            //     this.();
-                // break;
-                case 'dot':
-                    this.addOperation('.');
-                    break;
+            case 'equal':
+                break;
+            case 'dot':
+                this.addOperation('.');
+                break;
 
             case '0':
             case '1':
@@ -141,7 +147,8 @@ class CalcController {
 
         buttons.forEach((btn, index) => {
             this.addEventListenerAll(btn, 'click drag', e => {
-                console.log(btn.className.baseVal.replace('btn-', ''));
+                let textBtn = btn.className.baseVal.replace('btn-', '');
+                this.execBtn(textBtn);
             })
 
             this.addEventListenerAll(btn, 'mouseover mauseup mousedown', e => {
